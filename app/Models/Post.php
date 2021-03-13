@@ -14,10 +14,6 @@ class Post extends Model
         'body'
     ];
 
-    // public function ownedBy($id){
-    //     return $id ===$this->user_id;
-    // }
-
     public function ownedBy(User $user)
     {
         return $user->id === $this->user_id;

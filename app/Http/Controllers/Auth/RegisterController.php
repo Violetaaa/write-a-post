@@ -9,31 +9,30 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
-   public function index() {
+    public function index()
+    {
         return view('auth.register');
-   }
+    }
 
-   public function store(Request $request) {
-    //validate input
-    $this->validate($request, [
-        'name' => 'required|max:255',
-        'email' => 'required|email|unique:users,email', //email único en la tabla usuarios en la columna email
-        'username' => 'required|unique:users,username',
-        'password' => 'required|confirmed'
-    ]);
+    public function store(Request $request)
+    {
 
-    //create user
-    User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'username' => $request->username,
-        'password' => Hash::make($request->password),
-    ]);
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:users,email',
+            'username' => 'required|unique:users,username',
+            'password' => 'required|confirmed'
+        ]);
 
-    //authenticate user con auth() o Auth::
-    auth()->attempt($request->only('email', 'password')); //$request->only() devuelve un array con los datos aolicitados
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+        ]);
 
+        auth()->attempt($request->only('email', 'password'));
 
-    return redirect()->route('dashboard');
-   }
+        return redirect()->route('dashboard');
+    }
 }

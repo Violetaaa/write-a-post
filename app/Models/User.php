@@ -43,13 +43,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function posts(){
+    public function posts()
+    {
         return $this->hasMany(Post::class);
     }
-
-    // public function ownsPost(Post $post)
-    // {
-    //     return $post->user_id === $this->id;
-    //     // return $this->posts->contains($post); //con collection. + lento xa esto tan simple
-    // }
 }

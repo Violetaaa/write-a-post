@@ -20,7 +20,6 @@ Route::get('register', [RegisterController::class, 'index'])->name('register');
 
 Route::get('posts', [PostController::class, 'index'])->name('posts');
 Route::post('posts', [PostController::class, 'store']);
-// Route::delete('posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
 Route::delete('posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
 Route::get('users/{user:username}/posts', [UserPostController::class, 'index'])->name('users.posts');
