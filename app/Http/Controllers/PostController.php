@@ -12,18 +12,13 @@ class PostController extends Controller
     {
         $this->middleware('auth')->only('store');
     }
-    
+
     public function index()
     {
-        // $posts = Post::get(); //Esto devuelve una colección de objetos que podremos iterar
-        // $posts = Post::orderBy('created_at', 'desc')->get();
-        // $posts = Post::latest()->get();
-        // $posts = Post::latest()->paginate(5); // PARA PAGINAR!!!!
-        $posts = Post::with('user')->latest()->paginate(10); // CON EAGER LOADING!!!
+        $posts = Post::with('user')->latest()->paginate(5);
 
         return view('posts.index', [
             'posts' => $posts
-            // 'posts' => collect() // devuelve coleccion vacio. sirve para test
         ]);
     }
 
@@ -33,30 +28,13 @@ class PostController extends Controller
             'body' => 'required'
         ]);
 
-        // dd('passed');
-
         $request->user()->posts()->create($request->only('body'));
 
         return back();
     }
-    // public function destroy($id){
-    //     // dd('delete', $id);
-    //     //opción 1
-    //     // $post = Post::where('id', '=', $id)->first();
-    //     //opción 2, mejor
-    //     $post = Post::find($id);
-    //     $post->delete();
-    //     return back();
-    //     dd($post);
-    // }
 
-    public function destroy(Request $request, Post $post){
-
-        // if(!$post->ownedBy($request->user)){
-        //    return response(null, 401);
-        //mejor esto, si el usuario no puede borrar el post
-        // return new AuthorizationException();
-        // }
+    public function destroy(Request $request, Post $post)
+    {
         $this->authorize('delete', $post);
 
         $post->delete();
